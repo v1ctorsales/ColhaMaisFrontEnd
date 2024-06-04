@@ -5,7 +5,6 @@ import Logo from "./Logo";
 function Header(){
 return(
     <div className="HeaderDiv">
-        <Logo></Logo>
         <div className="HeaderRightSection">
             <Button nome="Acesso" classe="headerbtn"></Button>
             <Button nome="Saiba Mais" classe="headerbtn"></Button>

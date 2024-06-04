@@ -8,13 +8,18 @@
   --colorMarrom: #6F4E37;
  }
 
-
 html{
   background-color: var(--colorBranco);
 }
 
 .LogoDiv{
   display: inline;
+}
+
+.LoginFormDiv > .LogoDiv > .LogoImg{
+  width: 50%;
+  text-align: center;
+  margin: 10% 0 10% 0;
 }
 
 .HeaderDiv{
@@ -26,6 +31,16 @@ display: inline-flex;
 justify-content: space-around;
 align-items: center;
 width: 100%;
+}
+
+.LoginFormDiv > .HeaderDiv{
+  height: auto;
+}
+
+.LoginFormDiv > .HeaderDiv > .HeaderRightSection{
+justify-content: center;
+gap: 10%;
+margin: 0;
 }
 
 .LogoImg{
@@ -43,6 +58,26 @@ width: 100%;
   text-align: center;
   display: inline-flex;
   
+}
+
+.bodyHandle{
+  display: inline-flex;
+  width: 100%;
+}
+
+.backgroundHandle{
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  height: 95vh;
+}
+
+.backgroundHandle  img{
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  float: left;
+  width: auto;
+  height: 100%;
 }
 
 .btn{
@@ -78,8 +113,6 @@ margin-top: 25px;
   height: 50vh;
   text-align: center;
   align-items: center;
-  margin: auto;
-  margin-top: 5%;
   border-radius: 5px;
 }
 
@@ -122,14 +155,9 @@ margin-top: 25px;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
-
-
-
-
 * {
   box-sizing: border-box;
 }
-
 
 main {
   width: 100%;
