@@ -17,7 +17,10 @@ return(
             <p>Digite a sua senha</p>
             <input className="lgninput" type="password" />
         </div>
-        <Button nome="Entrar" classe="loginformbrn"></Button>
+        <div className="loginActionOptions">
+            <Button nome="Entrar" classe="loginformbrn"></Button>
+            <a className="loginA" href="google.com">Criar uma conta</a>
+        </div>
         <div class="background-">
   <div class="canvas-container">
     <canvas id="fieldCanvas"> </canvas>

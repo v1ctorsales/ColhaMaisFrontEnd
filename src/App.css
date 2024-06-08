@@ -70,6 +70,7 @@ margin: 0;
   overflow: hidden;
   position: relative;
   height: 95vh;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 .backgroundHandle  img{
@@ -109,6 +110,7 @@ margin-top: 25px;
 }
 
 .LoginFormDiv{
+  min-width: 400px;
   width: 50%;
   height: 50vh;
   text-align: center;
@@ -139,6 +141,23 @@ margin-top: 25px;
   border: 1px solid var(--colorBege);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+
+.loginActionOptions{
+  position: relative;
+  justify-content: space-evenly ;
+  display: flex;
+  align-items: baseline;
+}
+
+.loginA{
+text-decoration: none;
+color: grey;
+}
+
+.loginA:hover{
+  text-decoration: underline;
+  color: var(--colorVerdeEscuro)
+  }
 
 .Footer{
   display: grid;
