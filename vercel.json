@@ -1,0 +1,6 @@
+{
+    "routes": [
+      { "src": "/api/hello", "dest": "src/api/hello.js", "methods": ["GET", "POST"] }
+    ]
+  }
+  
