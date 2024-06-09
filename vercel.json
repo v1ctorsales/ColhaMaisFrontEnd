@@ -1,6 +1,8 @@
 {
-  "version": 2,
-  "routes": [
-    { "src": "/api/verificaLogin", "dest": "/api/verificaLogin.js" }
-  ]
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  },
+  "installCommand": "npm install --legacy-peer-deps"
 }

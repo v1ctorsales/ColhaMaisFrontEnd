@@ -17,9 +17,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm install --legacy-peer-deps && next build",
     "test": "react-scripts test",
+    "postinstall": "npm install --legacy-peer-deps",
     "eject": "react-scripts eject"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "eslintConfig": {
     "extends": [
