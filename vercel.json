@@ -1,6 +1,6 @@
 {
-    "routes": [
-      { "src": "/api/hello", "dest": "src/api/hello.js", "methods": ["GET", "POST"] }
-    ]
-  }
-  
+  "version": 2,
+  "routes": [
+    { "src": "/api/verificaLogin", "dest": "/api/verificaLogin.js" }
+  ]
+}

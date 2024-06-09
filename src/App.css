@@ -4,6 +4,7 @@
   --colorVerdeBrilhante: #D9EDBF;
   --colorVerdeEscuro: #75A47F;
   --colorVerdeEscuro2: #4e8900;
+  --colorErro: #c40101;
   --colorBege: #f1f5e4;
   --colorMarrom: #6F4E37;
  }
@@ -201,4 +202,23 @@ main {
 #fieldCanvas{
   width: 100% ;
   height: 100%;
+}
+
+.error-message{
+  color: var(--colorErro);
+}
+
+.progress-bar {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  height: 3px; 
+  background-color: var(--colorErro)
+}
+
+.error-container {
+  width: 40%;
+  margin: auto;
+  position: relative;
+  margin-top: 10px;
 }

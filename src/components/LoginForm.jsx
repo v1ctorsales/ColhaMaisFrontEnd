@@ -1,31 +1,70 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Button from "./Button";
 import Logo from "./Logo";
 import Header from "./Header";
 import axios from 'axios';
 
 function LoginForm() {
-    // Criação de refs para os inputs
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
-    console.log("b")
+    const [error, setError] = useState(null);
+    const [progress, setProgress] = useState(100);
+    const duration = 6000; // Duração total em milissegundos
+
+    useEffect(() => {
+        let interval;
+        if (error) {
+            interval = setInterval(() => {
+                setProgress(prevProgress => {
+                    const remainingProgress = prevProgress - (100 / (duration / 50)); // Divide a porcentagem restante pelo tempo total do intervalo
+                    return Math.max(remainingProgress, 0); // Garante que a barra nunca seja menor que 0
+                });
+            }, 50); // Intervalo de tempo ajustado para 50ms
+        } else {
+            setProgress(100);
+        }
+
+        return () => clearInterval(interval);
+    }, [error]);
 
     async function verificarLogin() {
-        console.log("a")
+        console.log("Verificando login...");
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
-    
+
         try {
             const response = await axios.post('/api/verificaLogin', { email, password });
-    
+
+            // Quando a resposta é bem-sucedida (status 200)
             if (response.status === 200) {
                 alert(response.data.message);  // Login bem-sucedido
-            } else {
-                alert(response.data.message);  // Credenciais inválidas
             }
         } catch (error) {
-            console.error('Erro na verificação de login:', error);
-            alert('Ocorreu um erro. Tente novamente.');
+            // Quando ocorre um erro na requisição
+            if (error.response) {
+                // Se o status da resposta é 401, tratamos como credenciais inválidas
+                if (error.response.status === 401) {
+                    setError(error.response.data.message);  // Credenciais inválidas
+                    // Define um timer para limpar a mensagem de erro após 3 segundos
+                    setTimeout(() => {
+                        setError(null);
+                    }, 6800);
+                } else {
+                    // Outros erros são tratados aqui
+                    setError('Ocorreu um erro: ' + error.response.data.message);
+                    // Define um timer para limpar a mensagem de erro após 3 segundos
+                    setTimeout(() => {
+                        setError(null);
+                    }, 6800);
+                }
+            } else {
+                console.error('Erro na verificação de login:', error);
+                setError('Ocorreu um erro. Tente novamente.');
+                // Define um timer para limpar a mensagem de erro após 3 segundos
+                setTimeout(() => {
+                    setError(null);
+                }, 6800);
+            }
         }
     }
 
@@ -41,15 +80,17 @@ function LoginForm() {
                 <p>Digite a sua senha</p>
                 <input ref={passwordRef} className="lgninput" type="password" />
             </div>
+            {error && (
+                <div className="error-container">
+                    <p className="error-message">{error}</p>
+                    <div className="progress-bar" style={{ width: `${progress}%`, transition: 'width 0.5s linear' }}></div>
+                </div>
+            )}
             <div className="loginActionOptions">
                 <Button onClick={verificarLogin} nome="Entrar" classe="loginformbrn" />
                 <a className="loginA" href="/criarConta">Criar uma conta</a>
             </div>
-            <div className="background-">
-                <div className="canvas-container">
-                    <canvas id="fieldCanvas"> </canvas>
-                </div>
-            </div>
+
         </div>
     );
 }
