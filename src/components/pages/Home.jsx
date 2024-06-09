@@ -1,5 +1,4 @@
 import LoginForm from "../LoginForm";
-import Header from "../Header";
 import Background from '../../imgs/background2.png'
 import Footer from "../Footer";
 
@@ -9,7 +8,7 @@ function Home(){
         <div className='bodyHandle'>
         <LoginForm />
         <div className='backgroundHandle'>
-        <img src={Background}></img>
+        <img src={Background}  alt="Background"></img>
         </div>
         </div>
         <Footer />

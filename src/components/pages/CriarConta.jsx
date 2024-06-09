@@ -82,7 +82,7 @@ function CriarConta() {
       </div>
     </div>
     <div className='backgroundHandle'>
-        <img src={Background}></img>
+        <img src={Background} alt="Background"></img>
     </div>
     </div>
     <Footer />

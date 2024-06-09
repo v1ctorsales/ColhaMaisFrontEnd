@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "./Button";
-import Logo from "./Logo";
 
 function Header(){
 return(
