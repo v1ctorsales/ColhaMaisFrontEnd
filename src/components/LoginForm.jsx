@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom'; // Importação do useNavigate
 import Button from "./Button";
 import Logo from "./Logo";
 import Header from "./Header";
@@ -10,6 +11,8 @@ function LoginForm() {
     const [error, setError] = useState(null);
     const [progress, setProgress] = useState(100);
     const duration = 6000; // Duração total em milissegundos
+
+    const navigate = useNavigate(); // Instanciando o hook de navegação
 
     useEffect(() => {
         let interval;
@@ -29,45 +32,50 @@ function LoginForm() {
 
     async function verificarLogin() {
         console.log("Verificando login...");
+
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        try {
-            const response = await axios.post('/api/verificaLogin', { email, password });
+        if(email !== "" && password !== ""){
 
-            // Quando a resposta é bem-sucedida (status 200)
-            if (response.status === 200) {
-                alert(response.data.message);  // Login bem-sucedido
-            }
-        } catch (error) {
-            // Quando ocorre um erro na requisição
-            if (error.response) {
-                // Se o status da resposta é 401, tratamos como credenciais inválidas
-                if (error.response.status === 401) {
-                    setError(error.response.data.message);  // Credenciais inválidas
-                    // Define um timer para limpar a mensagem de erro após 3 segundos
-                    setTimeout(() => {
-                        setError(null);
-                    }, 6800);
+            try {
+                const response = await axios.post('/api/verificaLogin', { email, password });
+
+                // Quando a resposta é bem-sucedida (status 200)
+                if (response.status === 200) {
+                    // Redireciona para a página de criação de conta
+                    navigate('/Dashboard');
+                }
+            } catch (error) {
+                // Quando ocorre um erro na requisição
+                if (error.response) {
+                    // Se o status da resposta é 401, tratamos como credenciais inválidas
+                    if (error.response.status === 401) {
+                        setError(error.response.data.message);  // Credenciais inválidas
+                        // Define um timer para limpar a mensagem de erro após 3 segundos
+                        setTimeout(() => {
+                            setError(null);
+                        }, 6800);
+                    } else {
+                        // Outros erros são tratados aqui
+                        setError('Ocorreu um erro: ' + error.response.data.message);
+                        // Define um timer para limpar a mensagem de erro após 3 segundos
+                        setTimeout(() => {
+                            setError(null);
+                        }, 6800);
+                    }
                 } else {
-                    // Outros erros são tratados aqui
-                    setError('Ocorreu um erro: ' + error.response.data.message);
+                    console.error('Erro na verificação de login:', error);
+                    setError('Ocorreu um erro. Tente novamente.');
                     // Define um timer para limpar a mensagem de erro após 3 segundos
                     setTimeout(() => {
                         setError(null);
                     }, 6800);
                 }
-            } else {
-                console.error('Erro na verificação de login:', error);
-                setError('Ocorreu um erro. Tente novamente.');
-                // Define um timer para limpar a mensagem de erro após 3 segundos
-                setTimeout(() => {
-                    setError(null);
-                }, 6800);
             }
+                    
         }
     }
-
     return (
         <div className="LoginFormDiv">
             <Header />

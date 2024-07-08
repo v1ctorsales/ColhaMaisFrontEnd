@@ -13,6 +13,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/criarConta" element={<CriarConta />} />
           <Route path="*" element={<Navigate to="/" />} />
+
+          <Route path="/Dashboard" />
         </Routes>
       </Router>
     </div>

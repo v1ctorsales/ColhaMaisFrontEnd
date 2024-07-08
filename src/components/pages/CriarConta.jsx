@@ -4,7 +4,7 @@ import Logo from "../Logo";
 import Header from "../Header";
 import axios from 'axios';
 import Footer from "../Footer";
-import Background from '../../imgs/background4.jpg'
+import Background from '../../imgs/background4.jpg';
 
 function CriarConta() {
   const emailRef = useRef(null);
@@ -31,27 +31,37 @@ function CriarConta() {
       setError("As senhas não coincidem.");
       return;
     }
+
+    // Resetando o erro antes de fazer a nova tentativa
+    setError(null);
   
     try {
+      console.log('Enviando dados para criar conta:', { email, password });
+      
       const response = await axios.post('/api/criaConta', { email, password });
+      
       const { message, redirectUrl } = response.data;
+      console.log('Resposta do servidor:', response.data);
   
-      // Exibe a mensagem retornada pelo servidor
       alert(message);
   
-      // Redireciona para a página de login se a criação da conta foi bem-sucedida
       if (response.status === 200 && redirectUrl) {
-        // Aguarda 2 segundos antes de redirecionar
         setTimeout(() => {
           window.location.href = redirectUrl;
-        }, 2000); // 2 segundos
+        }, 2000);
       }
     } catch (error) {
       console.error('Erro ao criar conta:', error);
-      alert('Ocorreu um erro ao criar a conta. Por favor, tente novamente.');
+
+      if (error.response && error.response.data && error.response.data.message) {
+        // Mensagem de erro específica do servidor
+        setError(error.response.data.message);
+      } else {
+        // Mensagem genérica
+        setError('Ocorreu um erro ao criar a conta. Por favor, tente novamente.');
+      }
     }
   };
-  
 
   const isValidEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
@@ -59,33 +69,33 @@ function CriarConta() {
 
   return (
     <div className="App">
-    <div className='bodyHandle'>
-    <div className="LoginFormDiv">
-      <Header />
-      <Logo />
-      <div className="inputHodler">
-        <p>Digite seu e-mail</p>
-        <input ref={emailRef} className="lgninput" type="text" />
+      <div className='bodyHandle'>
+        <div className="LoginFormDiv">
+          <Header />
+          <Logo />
+          <div className="inputHodler">
+            <p>Digite seu e-mail</p>
+            <input ref={emailRef} className="lgninput" type="text" />
+          </div>
+          <div className="inputHodler">
+            <p>Digite a sua senha</p>
+            <input ref={passwordRef} className="lgninput" type="password" />
+          </div>
+          <div className="inputHodler">
+            <p>Confirme sua senha</p>
+            <input ref={confirmPasswordRef} className="lgninput" type="password" />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <div className="loginActionOptions">
+            <Button onClick={criarContaUsuario} nome="Criar Conta" classe="loginformbrn" />
+            <a className="loginA" href="/">Já possui uma conta? Faça login</a>
+          </div>
+        </div>
+        <div className='backgroundHandle'>
+          <img src={Background} alt="Background"></img>
+        </div>
       </div>
-      <div className="inputHodler">
-        <p>Digite a sua senha</p>
-        <input ref={passwordRef} className="lgninput" type="password" />
-      </div>
-      <div className="inputHodler">
-        <p>Confirme sua senha</p>
-        <input ref={confirmPasswordRef} className="lgninput" type="password" />
-      </div>
-      {error && <p className="error-message">{error}</p>}
-      <div className="loginActionOptions">
-        <Button onClick={criarContaUsuario} nome="Criar Conta" classe="loginformbrn" />
-        <a className="loginA" href="/">Já possui uma conta? Faça login</a>
-      </div>
-    </div>
-    <div className='backgroundHandle'>
-        <img src={Background} alt="Background"></img>
-    </div>
-    </div>
-    <Footer />
+      <Footer />
     </div>
   );
 }

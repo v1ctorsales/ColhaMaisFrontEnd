@@ -13,9 +13,6 @@ module.exports = async (req, res) => {
 
     const { email, password } = req.body;
 
-    console.log("Email recebido:", email);
-    console.log("Senha recebida:", password);
-
     try {
         const trimmedEmail = email.trim();
         const trimmedPassword = password.trim();
@@ -23,24 +20,37 @@ module.exports = async (req, res) => {
         console.log("Email após ajuste:", trimmedEmail);
         console.log("Senha após ajuste:", trimmedPassword);
 
-        // Aqui você deve inserir o novo usuário no banco de dados Supabase
-        const { data, error } = await supabase
-            .from('user') // Substitua 'user' pelo nome da sua tabela de usuários
-            .insert({ email: trimmedEmail, senha: trimmedPassword });
+        // Verifica se o usuário já existe
+        const { data: existingUser, error: existingUserError } = await supabase
+            .from('user')
+            .select('id')
+            .eq('email', trimmedEmail)
+            .single();
 
-            return res.status(200).json({ 
-                message: 'Conta criada com sucesso!',
-                redirectUrl: '/'
-            });
-            
-        
-        if (error) {
-            console.error("Erro retornado do Supabase:", error);
-            throw error;
+        if (existingUserError && existingUserError.code !== 'PGRST116') {
+            console.error("Erro ao verificar usuário existente:", existingUserError);
+            return res.status(400).json({ message: 'Erro ao verificar usuário existente.' });
         }
 
-        // Se a inserção for bem-sucedida, retornar uma mensagem de sucesso
-        return res.status(200).json({ message: 'Conta criada com sucesso!' });
+        if (existingUser) {
+            // Se o usuário já existe, retorna uma mensagem de erro
+            return res.status(400).json({ message: 'Usuário com este e-mail já existe.' });
+        }
+
+        // Criação do novo usuário
+        const { data, error } = await supabase
+            .from('user')
+            .insert({ email: trimmedEmail, senha: trimmedPassword });
+
+        if (error) {
+            console.error("Erro ao criar usuário no Supabase:", error);
+            return res.status(400).json({ message: 'Erro ao criar usuário.' });
+        }
+
+        return res.status(200).json({ 
+            message: 'Conta criada com sucesso!',
+            redirectUrl: '/'
+        });
 
     } catch (error) {
         console.error("Erro ao processar a requisição:", error);
